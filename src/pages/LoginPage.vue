@@ -74,7 +74,7 @@ export default defineComponent({
     const handlerLogin = async () => {
       try {
         await login(form.value);
-        router.push({ name: "me" });
+        router.replace({ name: "me" });
       } catch (error) {
         alert(error.message);
       }

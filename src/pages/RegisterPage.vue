@@ -83,7 +83,7 @@ export default defineComponent({
     const handlerRegister = async () => {
       try {
         await register(form.value);
-        router.push({
+        router.replace({
           name: "email-confirmation",
           query: { email: form.value.email, name: form.value.name },
         });

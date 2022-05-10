@@ -8,15 +8,20 @@ const routes = [
       { path: 'login', name: 'login', component: () => import('pages/LoginPage.vue') },
       { path: 'register', name: 'register', component: () => import('pages/RegisterPage.vue') },
       { path: 'email-confirmation', name: 'email-confirmation', component: () => import('pages/EmailConfirmationPage.vue') },
-      { path: 'me', name: 'me', component: () => import('pages/MePage.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: false,
+    }
   },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
-    ]
+      { path: 'me', name: 'me', component: () => import('pages/MePage.vue') }
+    ],
+    meta: {
+      requiresAuth: true,
+    }
   },
 
   // Always leave this as last one,
@@ -25,6 +30,6 @@ const routes = [
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   }
-]
+];
 
-export default routes
+export default routes;
