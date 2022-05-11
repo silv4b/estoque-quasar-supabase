@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title> Quasar Estoque Supabase </q-toolbar-title>
+        <q-toolbar-title> Quasar Estoque </q-toolbar-title>
       </q-toolbar>
     </q-header>
 

@@ -59,12 +59,14 @@
 import { defineComponent, ref } from "vue";
 import useAuthUser from "src/composables/UserAuthUser";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "LoginPage",
   setup() {
     const router = useRouter();
     const { login } = useAuthUser();
+    const $q = useQuasar();
 
     const form = ref({
       email: "",
@@ -76,7 +78,16 @@ export default defineComponent({
         await login(form.value);
         router.replace({ name: "me" });
       } catch (error) {
-        alert(error.message);
+        $q.notify({
+          message: error.message,
+          color: "primary",
+          actions: [
+            {
+              label: "Ok",
+              color: "white",
+            },
+          ],
+        });
       }
     };
 

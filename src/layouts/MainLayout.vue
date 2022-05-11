@@ -13,7 +13,7 @@
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
 
-        <q-btn-dropdown flat icon="person">
+        <q-btn-dropdown flat color="white" icon="person">
           <q-list>
             <q-item clickable v-close-popup @click="handlerLogout">
               <q-item-section>
@@ -57,18 +57,6 @@ const linksList = [
     icon: "code",
     link: "https://github.com/quasarframework",
   },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
 ];
 
 export default defineComponent({
@@ -82,9 +70,7 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
 
     const $q = useQuasar();
-
     const router = useRouter();
-
     const { logout } = userAuthUser();
 
     const handlerLogout = async () => {
