@@ -3,6 +3,7 @@
     <q-form
       class="square-card row justify-center"
       @submit.prevent="handlerLogin"
+      ref="myform"
     >
       <q-card square bordered class="q-pa-lg shadow-1">
         <q-card-section>
@@ -11,7 +12,17 @@
         <q-separator inset />
         <q-card-section>
           <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-            <q-input outlined bottom-slots v-model="form.email" label="Email">
+            <q-input
+              outlined
+              bottom-slots
+              v-model="form.email"
+              label="Email"
+              lazy-rules
+              :rules="[
+                (val) =>
+                  (val && val.length > 0) || 'Seu email deve ser digitado.',
+              ]"
+            >
               <template v-slot:prepend>
                 <q-icon name="email" />
               </template>
@@ -32,6 +43,10 @@
               v-model="form.password"
               label="Senha"
               type="password"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Senha é obrigatória.',
+              ]"
             >
               <template v-slot:prepend>
                 <q-icon name="lock" />
@@ -89,13 +104,15 @@ export default defineComponent({
 
     const form = ref({
       email: "",
-      passor: "",
+      password: "",
     });
 
     const handlerLogin = async () => {
       try {
         await login(form.value);
         router.replace({ name: "me" });
+        form.value.email = "";
+        form.value.password = "";
       } catch (error) {
         $q.notify({
           message: error.message,
@@ -111,6 +128,12 @@ export default defineComponent({
     };
 
     return { form, handlerLogin };
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
   },
 });
 </script>
