@@ -1,9 +1,12 @@
 <template>
   <q-page class="bg-green-1 row justify-center items-center">
-    <q-form class="row justify-center" @submit.prevent="handlerLogin">
+    <q-form
+      class="square-card row justify-center"
+      @submit.prevent="handlerLogin"
+    >
       <q-card square bordered class="q-pa-lg shadow-1">
         <q-card-section>
-          <p class="login col-12 text-h6 text-left">Login</p>
+          <p class="col-12 text-h6 text-left">Login</p>
         </q-card-section>
         <q-separator inset />
         <q-card-section>
@@ -55,7 +58,14 @@
               color="primary"
               class="full-width"
               flat
-              to="/register"
+              :to="{ name: 'register' }"
+            ></q-btn>
+            <q-btn
+              label="Esqueci minha senha!"
+              color="primary"
+              class="full-width"
+              flat
+              :to="{ name: 'forgot-password' }"
             ></q-btn>
           </div>
         </q-card-section>
@@ -105,8 +115,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-.login {
-  margin-top: 0.6rem;
+<style lang="scss">
+.q-card {
+  margin: 0.4rem !important;
 }
 </style>
