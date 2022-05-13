@@ -53,7 +53,7 @@
               <template v-slot:append>
                 <q-icon
                   name="close"
-                  @click="text = ''"
+                  @click="password = ''"
                   class="cursor-pointer"
                 />
               </template>

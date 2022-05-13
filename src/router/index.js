@@ -39,6 +39,7 @@ export default route(function (/* { store, ssrContext } */) {
       const token = accessToken.replace('#access_token=', ''); // coleta o token somente
       return { name: 'reset-password', query: { token } }; // manda para a rota de reset-password, adicionando o token na query
     }
+
     if (
       !isLoggedIn() && // se não estiver logado
       to.meta.requiresAuth && // devera ser criado em todas as rotas que deverão ser seguras (valida a securidade da rota no arquivo de rotas [routes.js])
