@@ -128,7 +128,7 @@ export default defineComponent({
         router.replace({ name: "me" });
       } catch (error) {
         $q.notify({
-          color: "red",
+          message: error.message,
           color: "red",
           actions: [
             {
