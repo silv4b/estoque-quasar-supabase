@@ -11,7 +11,7 @@
         <q-separator inset />
         <q-card-section>
           <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-            <q-input
+            <!-- <q-input
               outlined
               bottom-slots
               v-model="password"
@@ -34,7 +34,7 @@
                   class="cursor-pointer"
                 />
               </template>
-            </q-input>
+            </q-input> -->
             <q-input
               outlined
               bottom-slots
@@ -42,7 +42,14 @@
               label="Nova senha"
               :type="visibility"
               lazy-rules
+              :rules="[
+                (val) => !!val || 'Uma senha é obrigatória!',
+                isValidPassword,
+              ]"
             >
+              <template v-slot:prepend>
+                <q-icon name="lock" />
+              </template>
               <template v-slot:append>
                 <q-icon
                   name="close"
@@ -87,42 +94,28 @@
 <script>
 import { defineComponent, ref } from "vue";
 import useAuthUser from "src/composables/UserAuthUser";
-import { useQuasar } from "quasar";
+//import { useQuasar } from "quasar";
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
   name: "ResetPasswordPage",
   setup() {
-    const { sendPasswordResetEmail } = useAuthUser();
+    const { sendPasswordResetEmail, resetPassword } = useAuthUser();
+    const route = useRoute(); // rota atual
+    const router = useRouter(); // funções de rota (push, replace, etc...)
     const password = ref("");
-    const $q = useQuasar();
+    const token = route.query.token;
+    //const $q = useQuasar();
 
     const handlerPasswordReset = async () => {
-      try {
-        await sendPasswordResetEmail(password.value);
-        $q.notify({
-          message: `Email de recuperação de email enviado para ${password.value}`,
-          color: "primary",
-          actions: [
-            {
-              label: "Ok",
-              color: "white",
-            },
-          ],
-        });
-      } catch (error) {
-        $q.notify({
-          message: error.message,
-          color: "primary",
-          actions: [
-            {
-              label: "Ok",
-              color: "white",
-            },
-          ],
-        });
-      }
+      await resetPassword(token, password.value);
+      router.push({ name: "login" });
+      // adicionar try catch para avisar que a alteração foi concluída com sucesso
     };
-    return { password, handlerPasswordReset };
+    return {
+      password,
+      handlerPasswordReset,
+    };
   },
   data() {
     return {
