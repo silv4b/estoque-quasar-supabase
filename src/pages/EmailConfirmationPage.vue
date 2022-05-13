@@ -9,6 +9,11 @@
       <strong>{{ $route.query.email }}</strong
       >.
     </p>
+    <q-btn
+      label="Voltar para login"
+      color="primary"
+      :to="{ name: 'login' }"
+    ></q-btn>
   </q-page>
 </template>
 
