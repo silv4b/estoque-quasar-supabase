@@ -5,7 +5,7 @@
       @submit.prevent="handlerLogin"
       ref="myform"
     >
-      <q-card square bordered class="q-pa-lg shadow-1">
+      <q-card square bordered class="q-pa-sm shadow-1">
         <q-card-section>
           <p class="col-12 text-h6 text-left">Login</p>
         </q-card-section>
@@ -18,10 +18,8 @@
               v-model="form.email"
               label="Email"
               lazy-rules
-              :rules="[
-                (val) =>
-                  (val && val.length > 0) || 'Seu email deve ser digitado.',
-              ]"
+              :rules="[(val) => !!val || 'Email é obrigatório!', isValidEmail]"
+              hint="Digite um email válido!"
             >
               <template v-slot:prepend>
                 <q-icon name="email" />
@@ -111,8 +109,6 @@ export default defineComponent({
       try {
         await login(form.value);
         router.replace({ name: "me" });
-        form.value.email = "";
-        form.value.password = "";
       } catch (error) {
         $q.notify({
           message: error.message,
@@ -135,11 +131,14 @@ export default defineComponent({
       password: "",
     };
   },
+  methods: {
+    isValidEmail(val) {
+      const emailPattern =
+        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+      return emailPattern.test(val) || "Formato de email inválido!";
+    },
+  },
 });
 </script>
 
-<style lang="scss">
-.q-card {
-  margin: 0.4rem !important;
-}
-</style>
+<style lang="scss"></style>

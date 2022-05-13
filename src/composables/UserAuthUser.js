@@ -80,6 +80,9 @@ export default function useAuthUser() {
     return user;
   };
 
+  /**
+  * Reset user password with user email and access token
+  */
   const resetPassword = async (accessToken, newPassword) => {
     const { user, error } = await supabase.auth.api.updateUser(
       accessToken,
