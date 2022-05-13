@@ -11,11 +11,11 @@
         class="q-mt-xl"
         color="white"
         text-color="primary"
+        size="md"
+        style="width: 10rem"
         unelevated
-        size="lg"
         :to="{ name: 'login' }"
-        label="Início"
-        no-caps
+        label="Ir para o início"
       />
     </div>
   </div>

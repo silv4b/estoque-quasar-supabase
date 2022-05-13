@@ -79,7 +79,7 @@ export default defineComponent({
       } catch (error) {
         $q.notify({
           message: error.message,
-          color: "primary",
+          color: "red",
           actions: [
             {
               label: "Ok",

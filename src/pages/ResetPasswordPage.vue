@@ -11,30 +11,6 @@
         <q-separator inset />
         <q-card-section>
           <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-            <!-- <q-input
-              outlined
-              bottom-slots
-              v-model="password"
-              label="Nova senha"
-              type="password"
-              lazy-rules
-              :rules="[
-                (val) => !!val || 'Uma senha é obrigatória!',
-                isValidPassword,
-              ]"
-              hint="Digite uma senha forte para recuperação."
-            >
-              <template v-slot:prepend>
-                <q-icon name="lock" />
-              </template>
-              <template v-slot:append>
-                <q-icon
-                  name="close"
-                  @click="password = ''"
-                  class="cursor-pointer"
-                />
-              </template>
-            </q-input> -->
             <q-input
               outlined
               bottom-slots
@@ -94,7 +70,6 @@
 <script>
 import { defineComponent, ref } from "vue";
 import useAuthUser from "src/composables/UserAuthUser";
-//import { useQuasar } from "quasar";
 import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
@@ -105,7 +80,6 @@ export default defineComponent({
     const router = useRouter(); // funções de rota (push, replace, etc...)
     const password = ref("");
     const token = route.query.token;
-    //const $q = useQuasar();
 
     const handlerPasswordReset = async () => {
       await resetPassword(token, password.value);

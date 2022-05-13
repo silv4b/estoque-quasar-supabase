@@ -50,9 +50,13 @@
               outlined
               bottom-slots
               v-model="form.password"
-              label="Senha"
-              type="password"
-              hint="Digite sua senha."
+              label="Nova senha"
+              :type="visibility"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Senha é obrigatória.',
+                isValidPassword,
+              ]"
             >
               <template v-slot:prepend>
                 <q-icon name="lock" />
@@ -60,9 +64,29 @@
               <template v-slot:append>
                 <q-icon
                   name="close"
-                  @click="form.password = ''"
+                  @click="password = ''"
                   class="cursor-pointer"
                 />
+              </template>
+              <template v-slot:hint> Digite uma senha forte! </template>
+
+              <template v-slot:after>
+                <q-btn
+                  v-if="visibility == 'password'"
+                  round
+                  dense
+                  flat
+                  icon="visibility"
+                  @click="changeTypeEdit()"
+                ></q-btn>
+                <q-btn
+                  v-else
+                  round
+                  dense
+                  flat
+                  icon="visibility_off"
+                  @click="changeTypeEdit()"
+                ></q-btn>
               </template>
             </q-input>
             <q-btn
@@ -114,7 +138,7 @@ export default defineComponent({
       } catch (error) {
         $q.notify({
           message: error.message,
-          color: "primary",
+          color: "red",
           actions: [
             {
               label: "Ok",
@@ -131,13 +155,26 @@ export default defineComponent({
     return {
       email: "",
       password: "",
+      visibility: "password",
     };
   },
   methods: {
+    changeTypeEdit() {
+      if (this.visibility == "password") {
+        this.visibility = "text";
+      } else {
+        this.visibility = "password";
+      }
+    },
     isValidEmail(val) {
       const emailPattern =
         /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
       return emailPattern.test(val) || "Formato de email inválido!";
+    },
+    isValidPassword(val) {
+      const passwordPattern =
+        /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*[0-9])(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
+      return passwordPattern.test(val) || "Senha fraca!";
     },
   },
 });

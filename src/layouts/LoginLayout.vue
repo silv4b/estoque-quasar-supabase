@@ -2,7 +2,19 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title> Quasar Estoque </q-toolbar-title>
+        <q-toolbar-title>
+          <q-icon
+            name="store"
+            size="1.4em"
+            @click="
+              this.$router.push({
+                name: 'login',
+              })
+            "
+            class="cursor-pointer"
+          />
+          Quasar Store
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 

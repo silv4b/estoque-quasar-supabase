@@ -39,8 +39,8 @@
               outlined
               bottom-slots
               v-model="form.password"
-              label="Senha"
-              type="password"
+              label="Nova senha"
+              :type="visibility"
               lazy-rules
               :rules="[
                 (val) => (val && val.length > 0) || 'Senha é obrigatória.',
@@ -56,8 +56,25 @@
                   class="cursor-pointer"
                 />
               </template>
-              <template v-slot:hint v-if="!form.password">
-                Digite sua senha.
+              <template v-slot:hint> Digite uma senha forte! </template>
+
+              <template v-slot:after>
+                <q-btn
+                  v-if="visibility == 'password'"
+                  round
+                  dense
+                  flat
+                  icon="visibility"
+                  @click="changeTypeEdit()"
+                ></q-btn>
+                <q-btn
+                  v-else
+                  round
+                  dense
+                  flat
+                  icon="visibility_off"
+                  @click="changeTypeEdit()"
+                ></q-btn>
               </template>
             </q-input>
             <q-btn
@@ -111,8 +128,8 @@ export default defineComponent({
         router.replace({ name: "me" });
       } catch (error) {
         $q.notify({
-          message: error.message,
-          color: "primary",
+          color: "red",
+          color: "red",
           actions: [
             {
               label: "Ok",
@@ -129,9 +146,17 @@ export default defineComponent({
     return {
       email: "",
       password: "",
+      visibility: "password",
     };
   },
   methods: {
+    changeTypeEdit() {
+      if (this.visibility == "password") {
+        this.visibility = "text";
+      } else {
+        this.visibility = "password";
+      }
+    },
     isValidEmail(val) {
       const emailPattern =
         /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
