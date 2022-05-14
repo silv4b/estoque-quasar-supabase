@@ -24,8 +24,6 @@ After generate your electron app with the following command
 
 ```bash
 quasar dev -m electron
-#or
-quasar build -m electron
 ```
 
 Go to your `src-electron\electron-main.js` and add the specified line below
