@@ -16,8 +16,12 @@
               bottom-slots
               v-model="email"
               label="Email"
+              type="email"
               lazy-rules
-              :rules="[(val) => !!val || 'Email é obrigatório!', isValidEmail]"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Email é obrigatório!',
+                isValidEmail,
+              ]"
               hint="Digite um email válido para recuperação."
             >
               <template v-slot:prepend>
@@ -53,40 +57,25 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+
 import useAuthUser from "src/composables/UserAuthUser";
-import { useQuasar } from "quasar";
+import useNotify from "src/composables/UseNotify";
 
 export default defineComponent({
   name: "ForgotPasswordPage",
   setup() {
     const { sendPasswordResetEmail } = useAuthUser();
     const email = ref("");
-    const $q = useQuasar();
+    const { notifyError, notifySuccess } = useNotify();
 
     const handlerForgotReset = async () => {
       try {
         await sendPasswordResetEmail(email.value);
-        $q.notify({
-          message: `Email de recuperação de email enviado para ${email.value}`,
-          color: "primary",
-          actions: [
-            {
-              label: "Ok",
-              color: "white",
-            },
-          ],
-        });
+        notifySuccess(
+          `Email de recuperação de email enviado para ${email.value}`
+        );
       } catch (error) {
-        $q.notify({
-          message: error.message,
-          color: "red",
-          actions: [
-            {
-              label: "Ok",
-              color: "white",
-            },
-          ],
-        });
+        notifyError(error.message);
       }
     };
 

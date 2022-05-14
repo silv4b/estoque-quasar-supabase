@@ -19,7 +19,7 @@
               :type="visibility"
               lazy-rules
               :rules="[
-                (val) => !!val || 'Uma senha é obrigatória!',
+                (val) => (val && val.length > 0) || 'Senha é obrigatória.',
                 isValidPassword,
               ]"
             >
@@ -69,21 +69,31 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import useAuthUser from "src/composables/UserAuthUser";
 import { useRouter, useRoute } from "vue-router";
+
+import useAuthUser from "src/composables/UserAuthUser";
+import useNotify from "src/composables/UseNotify";
 
 export default defineComponent({
   name: "ResetPasswordPage",
   setup() {
-    const { sendPasswordResetEmail, resetPassword } = useAuthUser();
+    const { resetPassword } = useAuthUser();
+    const { notifyError, notifySuccess } = useNotify();
+
     const route = useRoute(); // rota atual
     const router = useRouter(); // funções de rota (push, replace, etc...)
+
     const password = ref("");
     const token = route.query.token;
 
     const handlerPasswordReset = async () => {
-      await resetPassword(token, password.value);
-      router.push({ name: "login" });
+      try {
+        await resetPassword(token, password.value);
+        router.push({ name: "login" });
+        notifySuccess(`Senha atualizada! 👌`);
+      } catch (error) {
+        notifyError(error.message);
+      }
       // adicionar try catch para avisar que a alteração foi concluída com sucesso
     };
     return {
@@ -109,13 +119,13 @@ export default defineComponent({
       const passwordPattern =
         /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*[0-9])(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
       /**
-       * ter tamanho mínimo 6 e no máximo 15 caracteres.
+       * ter tamanho mínimo 6 caracteres.
        * Deves ter somente letras e numero e caractere especial(!#@$%&)
        * Deve ter no mínimo uma letra maiúscula e minúscula.
        * Deve ter no mínimo um numero.
        * Deve ter no mínimo caractere especial(!#@$%&)
        */
-      return passwordPattern.test(val) || "Senha fraca!";
+      return (passwordPattern.test(val) && val.length >= 6) || "Senha fraca!";
     },
   },
 });

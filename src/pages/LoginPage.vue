@@ -17,8 +17,12 @@
               bottom-slots
               v-model="form.email"
               label="Email"
+              type="email"
               lazy-rules
-              :rules="[(val) => !!val || 'Email é obrigatório!', isValidEmail]"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Email é obrigatório!',
+                isValidEmail,
+              ]"
               hint="Digite um email válido!"
             >
               <template v-slot:prepend>
@@ -40,6 +44,7 @@
               bottom-slots
               v-model="form.password"
               label="Nova senha"
+              counter
               :type="visibility"
               lazy-rules
               :rules="[
@@ -56,7 +61,9 @@
                   class="cursor-pointer"
                 />
               </template>
-              <template v-slot:hint> Digite uma senha forte! </template>
+              <template v-slot:hint v-if="!form.password">
+                Digite sua senha!
+              </template>
 
               <template v-slot:after>
                 <q-btn
@@ -106,16 +113,17 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import useAuthUser from "src/composables/UserAuthUser";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+
+import useAuthUser from "src/composables/UserAuthUser";
+import useNotify from "src/composables/UseNotify";
 
 export default defineComponent({
   name: "LoginPage",
   setup() {
     const router = useRouter();
     const { login } = useAuthUser();
-    const $q = useQuasar();
+    const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
       email: "",
@@ -126,17 +134,9 @@ export default defineComponent({
       try {
         await login(form.value);
         router.replace({ name: "me" });
+        notifySuccess("Bem vindo! 😁");
       } catch (error) {
-        $q.notify({
-          message: error.message,
-          color: "red",
-          actions: [
-            {
-              label: "Ok",
-              color: "white",
-            },
-          ],
-        });
+        notifyError(error.message);
       }
     };
 

@@ -13,6 +13,12 @@
               bottom-slots
               v-model="form.name"
               label="Nome"
+              counter
+              maxlength="50"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Nome é obrigatório!',
+                isNameBiggerThan50,
+              ]"
               hint="Digite seu nome."
             >
               <template v-slot:prepend>
@@ -31,9 +37,13 @@
               bottom-slots
               v-model="form.email"
               label="Email"
+              type="email"
               lazy-rules
-              :rules="[(val) => !!val || 'Email é obrigatório!', isValidEmail]"
-              hint="Digite um email válido."
+              :rules="[
+                (val) => (val && val.length > 0) || 'Email é obrigatório!',
+                isValidEmail,
+              ]"
+              hint="Digite um email válido!"
             >
               <template v-slot:prepend>
                 <q-icon name="email" />
@@ -64,7 +74,7 @@
               <template v-slot:append>
                 <q-icon
                   name="close"
-                  @click="password = ''"
+                  @click="form.password = ''"
                   class="cursor-pointer"
                 />
               </template>
@@ -112,15 +122,16 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+
 import useAuthUser from "src/composables/UserAuthUser";
+import useNotify from "src/composables/UseNotify";
 
 export default defineComponent({
   name: "RegisterPage",
   setup() {
     const router = useRouter();
     const { register } = useAuthUser();
-    const $q = useQuasar();
+    const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
       name: "",
@@ -135,17 +146,9 @@ export default defineComponent({
           name: "email-confirmation",
           query: { email: form.value.email, name: form.value.name },
         });
+        notifySuccess("Email de confirmação enviado! 😁");
       } catch (error) {
-        $q.notify({
-          message: error.message,
-          color: "red",
-          actions: [
-            {
-              label: "Ok",
-              color: "white",
-            },
-          ],
-        });
+        notifyError(error.message);
       }
     };
 
@@ -174,7 +177,10 @@ export default defineComponent({
     isValidPassword(val) {
       const passwordPattern =
         /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*[0-9])(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
-      return passwordPattern.test(val) || "Senha fraca!";
+      return (passwordPattern.test(val) && val.length >= 6) || "Senha fraca!";
+    },
+    isNameBiggerThan50(val) {
+      return !(val.length == 50) || "Nome não pode ter mais de 50 caracteres.";
     },
   },
 });
