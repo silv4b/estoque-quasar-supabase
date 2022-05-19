@@ -45,10 +45,12 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
-import userAuthUser from "../composables/UserAuthUser";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
+
+import EssentialLink from "components/EssentialLink.vue";
+import userAuthUser from "../composables/UserAuthUser";
+import useNotify from "src/composables/UseNotify";
 
 const linksList = [
   {
@@ -72,6 +74,7 @@ export default defineComponent({
     const $q = useQuasar();
     const router = useRouter();
     const { logout } = userAuthUser();
+    const { notifyError, notifySuccess } = useNotify();
 
     const handlerLogout = async () => {
       $q.dialog({
@@ -80,11 +83,16 @@ export default defineComponent({
         cancel: true,
         persistent: true,
       }).onOk(async () => {
-        await logout();
-        router.replace({
-          name: "login",
-        });
-        /* o replatece elimina o histórico de rotas,
+        try {
+          await logout();
+          notifySuccess("Bye bye! 😁");
+          router.replace({
+            name: "login",
+          });
+        } catch (error) {
+          notifyError(error.message);
+        }
+        /* o replace elimina o histórico de rotas,
         diferente do push, que adicionar na pilha
         de histórico */
       });
