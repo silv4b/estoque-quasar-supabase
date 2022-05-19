@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import useAuthUser from "src/composables/UserAuthUser";
@@ -122,12 +122,18 @@ export default defineComponent({
   name: "LoginPage",
   setup() {
     const router = useRouter();
-    const { login } = useAuthUser();
+    const { login, isLoggedIn } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
       email: "",
       password: "",
+    });
+
+    onMounted(() => {
+      if (isLoggedIn) {
+        router.push({ name: "me" });
+      }
     });
 
     const handlerLogin = async () => {
