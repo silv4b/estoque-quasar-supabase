@@ -33,7 +33,7 @@ export default route(function (/* { store, ssrContext } */) {
     // se for uma requisição de recuperação de senha, manda para a rota de resete-password
     if (
       to.hash.includes('type=recovery') && // requisitando modificação de algo (senha)
-      to.name !== 'reset-password' // verfiica se o nome da rota é diferente de reset-passord (ainda n tá na rota correta)
+      to.name !== 'reset-password' // verifica se o nome da rota é diferente de reset-passord (ainda n tá na rota correta)
     ) {
       const accessToken = to.hash.split('&')[0]; // access token da url, coleta o primeiro parâmetro da url, que separada por & é o access token
       const token = accessToken.replace('#access_token=', ''); // coleta o token somente

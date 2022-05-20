@@ -70,7 +70,6 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
-
     const $q = useQuasar();
     const router = useRouter();
     const { logout } = userAuthUser();
@@ -79,7 +78,7 @@ export default defineComponent({
     const handlerLogout = async () => {
       $q.dialog({
         title: "Sair",
-        message: "Deseja realemente sair?",
+        message: "Deseja realmente sair?",
         cancel: true,
         persistent: true,
       }).onOk(async () => {
