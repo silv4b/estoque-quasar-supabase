@@ -44,7 +44,9 @@ mainWindow = new BrowserWindow({
 
 ## Deploy on Netlify
 
-After successful deployment on Netlify, go to your project on subase.io, then under authentication, in the site url settings and additional redirect urls, add, after a comma, the link of your application in Netlify.  
+After successful deployment on Netlify, go to your project on supabase.io, then under authentication, in the site url settings and additional redirect urls, add, after a comma, the link of your application in Netlify.  
+
+### Solving netlify's 404 error with vue-router in history mode
 
 According to Antonio Ufano [here](https://antonioufano.com/articles/fix-404-errors-with-vuejs-apps-on-netlify/) and the Netlify documentation [here](https://docs.netlify.com/routing/redirects/), if the vue-router is configured as history mode, it is necessary to create a plain text file with the following lines  
 
