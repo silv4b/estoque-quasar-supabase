@@ -44,7 +44,15 @@ mainWindow = new BrowserWindow({
 
 ## Deploy on Netlify
 
-After successful deployment on Netlify, go to your project on subase.io, then under authentication, in the site url settings and additional redirect urls, add, after a comma, the link of your application in Netlify.
+After successful deployment on Netlify, go to your project on subase.io, then under authentication, in the site url settings and additional redirect urls, add, after a comma, the link of your application in Netlify.  
+
+According to Antonio Ufano [here](https://antonioufano.com/articles/fix-404-errors-with-vuejs-apps-on-netlify/) and the Netlify documentation [here](https://docs.netlify.com/routing/redirects/), if the vue-router is configured as history mode, it is necessary to create a plain text file with the following lines  
+
+```bash
+/*    /index.html   200
+```  
+
+and add it to your project's `public` folder as netlify will automatically recognize it.
 
 ### Start the app in development mode fot windows/linux
 
