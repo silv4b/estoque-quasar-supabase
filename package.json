@@ -15,8 +15,11 @@
     "@supabase/supabase-js": "^1.35.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "dotenv": "^16.0.1",
     "jshint": "^2.13.4",
+    "process": "^0.11.10",
     "quasar": "^2.6.0",
+    "save-dev": "^0.0.1-security",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0"
   },
