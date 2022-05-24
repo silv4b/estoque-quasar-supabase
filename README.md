@@ -1,8 +1,21 @@
-# Store app with Quasar Framework and Supabase (an open source Firebase alternative)
+# Quasar Store
+
+### Store app with Quasar Framework and Supabase (an open source Firebase alternative)
 
 Small store project being built using [Vue3](https://vuejs.org/), [Supabase](https://supabase.com/docs/) and [Quasar](https://quasar.dev/) framework, based on the application developed in the [tutorial](https://www.youtube.com/playlist?list=PLBjvYfV_TvwIfgvouZCaLtgjYdrWQL02d) available on the [Patrick Monteiro](https://www.youtube.com/c/PatrickMonteiroEng)'s channel.
 
 All authentication functionality used in this project is isolated in the following repository [kit-auth-supabase-quasar](https://github.com/silv4b/kit-auth-supabase-quasar).
+
+## Techs
+
+Quasar Store uses a number of open source projects to work properly:
+
+- VueJS 3
+- Vue Router
+- Quasar Framework
+- Supabase
+
+# Dependencies
 
 ## Install the dependencies
 
@@ -18,7 +31,7 @@ npm install
 quasar dev
 ```
 
-### Remove/Hide menurbar from electron app (optional)
+## Removing menur bar from electron app (optional)
 
 After generate your electron app with the following command
 
@@ -42,17 +55,19 @@ mainWindow = new BrowserWindow({
 });
 ```
 
+# Netlify
+
 ## Deploy on Netlify
 
-After successful deployment on Netlify, go to your project on supabase.io, then under authentication, in the site url settings and additional redirect urls, add, after a comma, the link of your application in Netlify.  
+(Melhorar descrição) After successful deployment on Netlify, go to your project on supabase.io, then under authentication, in the site url settings and additional redirect urls, add, after a comma, the link of your application in Netlify.
 
-### Solving netlify's 404 error with vue-router in history mode
+## Solving netlify's 404 error with vue-router in history mode
 
-According to Antonio Ufano [here](https://antonioufano.com/articles/fix-404-errors-with-vuejs-apps-on-netlify/) and the Netlify documentation [here](https://docs.netlify.com/routing/redirects/), if the vue-router is configured as history mode, it is necessary to create a plain text file with the following lines  
+According to Antonio Ufano [here](https://antonioufano.com/articles/fix-404-errors-with-vuejs-apps-on-netlify/) and the Netlify documentation [here](https://docs.netlify.com/routing/redirects/), if the vue-router is configured as history mode, it is necessary to create a plain text file with the following lines
 
 ```bash
 /*    /index.html   200
-```  
+```
 
 and add it to your project's `public` folder as netlify will automatically recognize it.
 
@@ -61,6 +76,8 @@ and add it to your project's `public` folder as netlify will automatically recog
 ```bash
 quasar dev -m electron
 ```
+
+# Managing Code
 
 ### Lint the files
 
@@ -77,6 +94,8 @@ yarn format
 # or
 npm run format
 ```
+
+# To build the project
 
 ### Build the app for windows/lionux with electron
 
