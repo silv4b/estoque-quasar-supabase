@@ -125,9 +125,6 @@ export default defineComponent({
     const { login, isLoggedIn } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
 
-    console.info(process.env.SUPABASE_URL);
-    console.info(process.env.SUPABASE_KEY);
-
     const form = ref({
       email: "",
       password: "",

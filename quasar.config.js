@@ -8,20 +8,9 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
-// Configuration .env
-
-// const DotEnv = require('dotenv');
-
-// const webpack = require('webpack');
-
-// const envparsers = require('./config/envparser');
-
-// General configuration
-
 const ESLintPlugin = require('eslint-webpack-plugin');
-
 const { configure } = require('quasar/wrappers');
-//const envparser = require('./config/envparser');
+const envparser = require('./config/envparser');
 
 module.exports = configure(function (ctx) {
   return {
@@ -62,15 +51,7 @@ module.exports = configure(function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history', // available values: 'hash', 'history'
-
-      env: {
-        SUPABASE_URL: "https://okedjwqepxamvqekrqwp.supabase.co",
-        SUPABASE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rZWRqd3FlcHhhbXZxZWtycXdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTE4MDM5MjQsImV4cCI6MTk2NzM3OTkyNH0.UQTiEZMnyazuNIGoipNyOxE_hgVnrnxkGQZgCFCwIBU"
-      },
-
-      //env: envparser(),
-
-      //env: require('dotenv').config().parsed,
+      env: envparser(),
 
       // transpile: false,
       // publicPath: '/',

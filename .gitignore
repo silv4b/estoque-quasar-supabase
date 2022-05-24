@@ -31,4 +31,9 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-.env
+
+# Environment variables
+# .env
+.env.dev
+.env.prod
+.env.example
