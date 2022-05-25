@@ -34,9 +34,10 @@ yarn-error.log*
 
 # Environment variables
 # .env
+# .env.example
 .env.dev
 .env.prod
-.env.example
+
 
 # Local Netlify folder
 .netlify
