@@ -51,7 +51,11 @@ module.exports = configure(function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      env: envparser(),
+      // env: envparser(),
+      env: {
+        SUPABASE_URL: process.env.SUPABASE_URL,
+        SUPABASE_KEY: process.env.SUPABASE_KEY,
+      },
 
       // transpile: false,
       // publicPath: '/',

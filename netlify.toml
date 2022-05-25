@@ -1,5 +1,5 @@
 [build]
- functions = "functions"
+  # functions = "functions"
   base     = ""
   publish  = "dist/spa"
   command  = "quasar build"
