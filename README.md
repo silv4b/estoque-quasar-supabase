@@ -1,10 +1,12 @@
-# Quasar Store
+# Quasar Store  
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4112ddf4-30f4-4857-bb20-7aa0ab31e5e3/deploy-status)](https://app.netlify.com/sites/quasar-supabase-vue/deploys)
 
 ### Store app with Quasar Framework and Supabase (an open source Firebase alternative)
 
 Small store project being built using [Vue3](https://vuejs.org/), [Supabase](https://supabase.com/docs/) and [Quasar](https://quasar.dev/) framework, based on the application developed in the [tutorial](https://www.youtube.com/playlist?list=PLBjvYfV_TvwIfgvouZCaLtgjYdrWQL02d) available on the [Patrick Monteiro](https://www.youtube.com/c/PatrickMonteiroEng)'s channel.
 
-All authentication functionality used in this project is isolated in the following repository [kit-auth-supabase-quasar](https://github.com/silv4b/kit-auth-supabase-quasar).
+All authentication functionality used in this project is isolated in the following repository [kit-auth-supabase-quasar](https://github.com/silv4b/kit-auth-supabase-quasar).  
 
 ## Techs
 
