@@ -37,3 +37,9 @@ yarn-error.log*
 .env.dev
 .env.prod
 .env.example
+
+# Local Netlify folder
+.netlify
+
+# Vs Code Folder
+.vscode
