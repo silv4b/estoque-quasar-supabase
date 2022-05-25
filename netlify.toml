@@ -2,7 +2,7 @@
  functions = "functions"
   base     = ""
   publish  = "dist/spa"
-  command  = "npm run build"
+  command  = "quasar build"
 
 [[redirects]]
   from   = "/*"
