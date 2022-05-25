@@ -1,0 +1,10 @@
+[build]
+ functions = "functions"
+  base     = ""
+  publish  = "dist/spa"
+  command  = "npm run build"
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
