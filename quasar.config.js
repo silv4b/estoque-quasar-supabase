@@ -51,7 +51,9 @@ module.exports = configure(function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      // env: envparser(),
+      // env: envparser(), // desta forma é mais fáceil trabalhar de forma dinâmica com multiplos arquivos .env (localmente/dev mode)
+      
+      // Suas variáveis de ambiente podem ser settadas aqui, via processe e setadas na UI do netlify, para serem injetadas no build do deploy. (deploy/prod mode)
       env: {
         SUPABASE_URL: process.env.SUPABASE_URL,
         SUPABASE_KEY: process.env.SUPABASE_KEY,
