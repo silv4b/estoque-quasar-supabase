@@ -51,6 +51,7 @@ import { useQuasar } from "quasar";
 import EssentialLink from "components/EssentialLink.vue";
 import userAuthUser from "../composables/UserAuthUser";
 import useNotify from "src/composables/UseNotify";
+import useDialog from "src/composables/UseDialog";
 
 const linksList = [
   {
@@ -74,14 +75,10 @@ export default defineComponent({
     const router = useRouter();
     const { logout } = userAuthUser();
     const { notifyError, notifySuccess } = useNotify();
+    const { dialogShow } = useDialog();
 
     const handlerLogout = async () => {
-      $q.dialog({
-        title: "Sair",
-        message: "Deseja realmente sair?",
-        cancel: true,
-        persistent: true,
-      }).onOk(async () => {
+      dialogShow("Sair", "Deseja realmente sair?").onOk(async () => {
         try {
           await logout();
           notifySuccess("Bye bye! 😁");
