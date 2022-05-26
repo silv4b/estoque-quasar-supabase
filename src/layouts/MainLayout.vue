@@ -78,13 +78,7 @@ export default defineComponent({
     const { dialogShow } = useDialog();
 
     const handlerLogout = async () => {
-      /*$q.dialog({
-        title: "Sair",
-        message: "Deseja realmente sair?",
-        cancel: true,
-        persistent: true,
-      })*/
-      dialogShow("Sair","Deseja realmente sair?").onOk(async () => {
+      dialogShow("Sair", "Deseja realmente sair?").onOk(async () => {
         try {
           await logout();
           notifySuccess("Bye bye! 😁");
