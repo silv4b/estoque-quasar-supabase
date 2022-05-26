@@ -71,27 +71,33 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
-    const $q = useQuasar();
     const router = useRouter();
     const { logout } = userAuthUser();
     const { notifyError, notifySuccess } = useNotify();
     const { dialogShow } = useDialog();
 
     const handlerLogout = async () => {
-      dialogShow("Sair", "Deseja realmente sair?").onOk(async () => {
-        try {
-          await logout();
-          notifySuccess("Bye bye! 😁");
-          router.replace({
-            name: "login",
-          });
-        } catch (error) {
-          notifyError(error.message);
-        }
-        /* o replace elimina o histórico de rotas,
-        diferente do push, que adicionar na pilha
-        de histórico */
-      });
+      dialogShow({
+        tittle: "Sair",
+        message: "Deseja realmente sair da aplicação?",
+      })
+        .onOk(async () => {
+          try {
+            await logout();
+            notifySuccess("Bye bye! 😁");
+            router.replace({
+              name: "login",
+            });
+          } catch (error) {
+            notifyError(error.message);
+          }
+          /** o replace elimina o histórico de rotas, diferente
+           * do push, que adicionar na pilha de histórico
+           */
+        })
+        .onCancel(async () => {
+          notifySuccess("Ops, ia mas voltou! 😁");
+        });
     };
 
     return {
