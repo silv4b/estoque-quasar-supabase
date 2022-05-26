@@ -80,7 +80,26 @@ So that the netlify deploy build can inject the inserted variables through its U
 
 If you are using netlify-cli (optional), after configuring it, just run the command 'netlify link' to link your local repository with the online project, if you haven't created it, use the documentation to create and proceed.
 
-To test locally use: `quasar build && netlify dev`, to deploy use: `netlify build -prod` (in this case netlify will use the local environment variables, so beware. It works best if used in conjunction with the `env: envparser()` configuration in the `quasar.config.js` file).
+To test locally use: `quasar build && netlify dev`, to deploy use: `netlify build -prod` (in this case netlify will use the local environment variables, so beware. It works best if used in conjunction with the `env: envparser()` configuration in the `quasar.config.js` file).  
+
+To test locally use: `quasar build && netlify dev`, to deploy use: `netlify build --prod` (in this case netlify will use the local environment variables, so beware. It works best if used in conjunction with the `env: envparser()` configuration in the `quasar.config.js` file.
+
+To better use the netlify deploy, create a netlify.toml file containing the following content:
+
+```toml
+[build]
+  # functions = "functions"
+  base     = ""
+  publish  = "dist/spa"
+  command  = "quasar build"
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+```
+
+Netlify uses netlify.toml data primarily at deploy time. The `[[redirects]]` part has the same role as the `_redirects` file created in the `public/` folder.
 
 ## Deploy on Netlify
 
