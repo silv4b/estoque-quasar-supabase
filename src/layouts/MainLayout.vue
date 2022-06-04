@@ -49,7 +49,7 @@ import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
 import EssentialLink from "components/EssentialLink.vue";
-import userAuthUser from "../composables/UserAuthUser";
+import UseAuthUser from "../composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 import useDialog from "src/composables/UseDialog";
 
@@ -72,7 +72,7 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false);
     const router = useRouter();
-    const { logout } = userAuthUser();
+    const { logout } = UseAuthUser();
     const { notifyError, notifySuccess } = useNotify();
     const { dialogShow } = useDialog();
 

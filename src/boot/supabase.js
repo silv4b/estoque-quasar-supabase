@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import useAuthUser from "src/composables/UserAuthUser";
+import useAuthUser from "src/composables/UseAuthUser";
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;

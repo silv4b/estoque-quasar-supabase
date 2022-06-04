@@ -115,7 +115,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-import useAuthUser from "src/composables/UserAuthUser";
+import useAuthUser from "src/composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 
 export default defineComponent({

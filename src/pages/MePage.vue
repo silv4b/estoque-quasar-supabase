@@ -11,11 +11,11 @@
 
 <script>
 import { defineComponent } from "vue";
-import userAuthUser from "../composables/UserAuthUser";
+import UseAuthUser from "../composables/UseAuthUser";
 export default defineComponent({
   name: "IndexPage",
   setup() {
-    const { user } = userAuthUser();
+    const { user } = UseAuthUser();
     return {
       user,
     };
