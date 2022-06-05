@@ -19,7 +19,8 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: 'me', name: 'me', component: () => import('pages/MePage.vue') }
+      { path: 'me', name: 'me', component: () => import('pages/MePage.vue') },
+      { path: 'category', name: 'category', component: () => import('pages/category/ListPage.vue') },
     ],
     meta: {
       requiresAuth: true,

@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title> Estoque </q-toolbar-title>
 
         <q-btn-dropdown flat color="white" icon="person">
           <q-list>
@@ -27,7 +27,7 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label header> Menu </q-item-label>
 
         <EssentialLink
           v-for="link in essentialLinks"
@@ -46,19 +46,28 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
 
 import EssentialLink from "components/EssentialLink.vue";
 import UseAuthUser from "../composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 import useDialog from "src/composables/UseDialog";
 
+const mdiIcon = (name) => {
+  return "mdi-" + name;
+};
+
 const linksList = [
   {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
+    title: "Início",
+    caption: "Página principal",
+    icon: mdiIcon("home"),
+    routeName: "me",
+  },
+  {
+    title: "Categorias",
+    caption: "Itens por categoria",
+    icon: mdiIcon("shape-outline"),
+    routeName: "category",
   },
 ];
 
