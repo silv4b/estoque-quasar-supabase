@@ -8,7 +8,12 @@
         row-key="id"
         class="col-12"
         :loading="loading"
+        no-data-label="Não foi encontrado nada ..."
+        no-results-label="Sem resultados para este filtro."
       >
+        <template v-slot:loading>
+          <q-inner-loading showing color="primary" />
+        </template>
         <template v-slot:top="props">
           <div class="col-2 q-table__title">Categorias</div>
           <q-space />
@@ -29,10 +34,18 @@
               color="blue-grey-9"
               dense
               size="md"
+              @click="handlerEdit(props.row)"
             >
               <q-tooltip> Editar categoria </q-tooltip></q-btn
             >
-            <q-btn icon="mdi-delete-outline" flat color="red" dense size="md">
+            <q-btn
+              icon="mdi-delete-outline"
+              flat
+              color="red"
+              dense
+              size="md"
+              @click="handlerRemove(props.row)"
+            >
               <q-tooltip> Remover categoria </q-tooltip>
             </q-btn>
           </q-td>
@@ -83,12 +96,15 @@ const columns = [
 import { defineComponent, ref, onMounted } from "vue";
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "CategoryListPage",
   setup() {
     const categories = ref([]);
     const loading = ref(true);
+    const router = useRouter();
+
     const { list } = useApi();
     const { notifyError } = useNotify();
 
@@ -102,6 +118,14 @@ export default defineComponent({
       }
     };
 
+    const handlerEdit = async (category) => {
+      router.push({ name: "form-category", params: { id: category.id } });
+    };
+
+    const handlerRemove = async () => {
+      //
+    };
+
     onMounted(() => {
       handlerListCategories();
     });
@@ -111,6 +135,8 @@ export default defineComponent({
       categories,
       loading,
       handlerListCategories,
+      handlerEdit,
+      handlerRemove,
     };
   },
 });

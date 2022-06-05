@@ -1,9 +1,9 @@
 <template>
-  <!-- Adicionar essa funcionalidade a um dialog -->
+  <!-- TO-DO: Adicionar essa funcionalidade a um dialog -->
   <q-page class="bg-green-1 row justify-center items-center">
     <q-form
       class="square-card row justify-center"
-      @submit.prevent="handlerSubmit"
+      @submit.prevent="handlerSubmit()"
     >
       <q-card square bordered class="q-pa-sm shadow-1">
         <q-card-section>
@@ -21,7 +21,7 @@
               :rules="[
                 (val) => (val && val.length > 0) || 'Nome é obrigatório!',
               ]"
-              hint="Digite um email válido para recuperação."
+              hint="Digite o nome da nova categoria."
             >
               <template v-slot:prepend>
                 <q-icon name="mdi-shape-outline" />
@@ -35,11 +35,12 @@
               </template>
             </q-input>
             <q-btn
-              label="Adicionar"
+              :label="isUpdate ? 'Atualizar' : 'Adicionar'"
               color="primary"
               class="full-width"
               type="submit"
-            ></q-btn>
+            >
+            </q-btn>
             <q-btn
               label="Cancelar"
               color="primary"
@@ -55,9 +56,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
-
+import { defineComponent, ref, onMounted, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
 
@@ -67,7 +67,12 @@ export default defineComponent({
   setup() {
     const table = "categoria";
     const router = useRouter();
-    const { post } = useApi();
+    const route = useRoute();
+    const isUpdate = computed(() => route.params.id);
+
+    let category = {};
+
+    const { post, getById, update } = useApi();
     const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
@@ -76,17 +81,37 @@ export default defineComponent({
 
     const handlerSubmit = async () => {
       try {
-        await post(table, form.value);
-        notifySuccess("Categoria cadastrada!");
-        router.push({ name: "form-category" });
+        if (isUpdate.value) {
+          await update(table, form.value);
+          notifySuccess("Categoria atualizada!");
+        } else {
+          await post(table, form.value);
+          notifySuccess("Categoria cadastrada!");
+        }
+        router.push({ name: "category" });
       } catch (error) {
         notifyError(error.message);
       }
     };
 
+    const handlerGetCategory = async (id) => {
+      try {
+        category = await getById(table, id);
+        form.value = category;
+      } catch (error) {
+        notifyError(error.message);
+      }
+    };
+
+    onMounted(() => {
+      if (isUpdate.value) handlerGetCategory(isUpdate.value);
+    });
+
     return {
       handlerSubmit,
+      handlerGetCategory,
       form,
+      isUpdate,
     };
   },
 });

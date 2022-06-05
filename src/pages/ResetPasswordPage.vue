@@ -94,7 +94,6 @@ export default defineComponent({
       } catch (error) {
         notifyError(error.message);
       }
-      // adicionar try catch para avisar que a alteração foi concluída com sucesso
     };
     return {
       password,
