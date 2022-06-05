@@ -56,6 +56,8 @@ const mdiIcon = (name) => {
   return "mdi-" + name;
 };
 
+// https://materialdesignicons.com/
+
 const linksList = [
   {
     title: "Início",
@@ -69,6 +71,12 @@ const linksList = [
     icon: mdiIcon("shape-outline"),
     routeName: "category",
   },
+  // {
+  //   title: "Adicionar Categorias",
+  //   caption: "Itens por categoria",
+  //   icon: mdiIcon("shape-plus"),
+  //   routeName: "form-category",
+  // },
 ];
 
 export default defineComponent({

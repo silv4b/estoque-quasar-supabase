@@ -56,6 +56,7 @@
           icon="add"
           label="Nova Categoria"
           label-position="left"
+          :to="{ name: 'form-category' }"
         />
       </q-fab>
     </q-page-sticky>
@@ -79,7 +80,7 @@ const columns = [
   },
 ];
 
-import { defineComponent, ref, onMounted, reactive } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
 

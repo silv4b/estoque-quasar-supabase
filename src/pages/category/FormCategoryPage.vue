@@ -1,12 +1,13 @@
 <template>
+  <!-- Adicionar essa funcionalidade a um dialog -->
   <q-page class="bg-green-1 row justify-center items-center">
     <q-form
       class="square-card row justify-center"
-      @submit.prevent="handlerForgotReset"
+      @submit.prevent="handlerSubmit"
     >
       <q-card square bordered class="q-pa-sm shadow-1">
         <q-card-section>
-          <p class="login col-12 text-h6 text-left">Recuperação de Senha</p>
+          <p class="login col-12 text-h6 text-left">Adicionar Categoria</p>
         </q-card-section>
         <q-separator inset />
         <q-card-section>
@@ -14,39 +15,37 @@
             <q-input
               outlined
               bottom-slots
-              v-model="email"
-              label="Email"
-              type="email"
+              v-model="form.name"
+              label="Categoria"
               lazy-rules
               :rules="[
-                (val) => (val && val.length > 0) || 'Email é obrigatório!',
-                isValidEmail,
+                (val) => (val && val.length > 0) || 'Nome é obrigatório!',
               ]"
               hint="Digite um email válido para recuperação."
             >
               <template v-slot:prepend>
-                <q-icon name="email" />
+                <q-icon name="mdi-shape-outline" />
               </template>
               <template v-slot:append>
                 <q-icon
                   name="close"
-                  @click="email = ''"
+                  @click="form.name = ''"
                   class="cursor-pointer"
                 />
               </template>
             </q-input>
             <q-btn
-              label="Recuperar Senha"
+              label="Adicionar"
               color="primary"
               class="full-width"
               type="submit"
             ></q-btn>
             <q-btn
-              label="Voltar para login"
+              label="Cancelar"
               color="primary"
               class="full-width"
               flat
-              :to="{ name: 'login' }"
+              :to="{ name: 'category' }"
             ></q-btn>
           </div>
         </q-card-section>
@@ -57,37 +56,51 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 
-import useAuthUser from "src/composables/UseAuthUser";
+import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
 
 export default defineComponent({
-  name: "ForgotPasswordPage",
+  name: "FormCategoryPage",
+
   setup() {
-    const { sendPasswordResetEmail } = useAuthUser();
-    const email = ref("");
+    const table = "categoria";
+    const router = useRouter();
+    const { post } = useApi();
     const { notifyError, notifySuccess } = useNotify();
 
-    const handlerForgotReset = async () => {
+    const form = ref({
+      name: "",
+    });
+
+    const handlerSubmit = async () => {
       try {
-        await sendPasswordResetEmail(email.value);
-        notifySuccess(
-          `Email de recuperação de email enviado para ${email.value}`
-        );
+        await post(table, form.value);
+        notifySuccess("Categoria cadastrada!");
+        router.push({ name: "form-category" });
       } catch (error) {
         notifyError(error.message);
       }
     };
 
-    function isValidEmail(val) {
-      const emailPattern =
-        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-      return emailPattern.test(val) || "Formato de email inválido!";
-    }
-
-    return { email, handlerForgotReset, isValidEmail };
+    return {
+      handlerSubmit,
+      form,
+    };
   },
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.q-card {
+  margin: 0.8rem !important;
+}
+
+@media (max-width: 600px) {
+  .q-card {
+    margin: 0.8rem !important;
+    min-width: 300px;
+  }
+}
+</style>
