@@ -3,23 +3,15 @@
     <div class="row">
       <q-table
         title="Categorias"
-        :rows="rows"
+        :rows="categories"
         :columns="columns"
         row-key="id"
         class="col-12"
+        :loading="loading"
       >
         <template v-slot:top="props">
-          <div class="col-2 q-table__title">Treats</div>
+          <div class="col-2 q-table__title">Categorias</div>
           <q-space />
-          <!-- Adicionar funcionalidade em um floating button -->
-          <!-- <q-btn
-            flat
-            dense
-            size="md"
-            color="primary"
-            label="Nova Categoria"
-            class="q-ml-md"
-          /> -->
           <q-btn
             flat
             round
@@ -87,21 +79,37 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    id: "123",
-    name: "Tênis",
-  },
-];
-
-import { defineComponent } from "vue";
+import { defineComponent, ref, onMounted, reactive } from "vue";
+import useApi from "src/composables/UseApi";
+import useNotify from "src/composables/UseNotify";
 
 export default defineComponent({
   name: "CategoryListPage",
   setup() {
+    const categories = ref([]);
+    const loading = ref(true);
+    const { list } = useApi();
+    const { notifyError } = useNotify();
+
+    const handlerListCategories = async () => {
+      try {
+        loading.value = true;
+        categories.value = await list("categoria");
+        loading.value = false;
+      } catch (error) {
+        notifyError(error);
+      }
+    };
+
+    onMounted(() => {
+      handlerListCategories();
+    });
+
     return {
       columns,
-      rows,
+      categories,
+      loading,
+      handlerListCategories,
     };
   },
 });
