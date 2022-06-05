@@ -21,6 +21,14 @@
             flat
             round
             dense
+            icon="mdi-reload"
+            @click="handlerListCategories()"
+            class="q-ml-md"
+          />
+          <q-btn
+            flat
+            round
+            dense
             :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
             @click="props.toggleFullscreen"
             class="q-ml-md"
@@ -96,6 +104,7 @@ const columns = [
 import { defineComponent, ref, onMounted } from "vue";
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
+import useDialog from "src/composables/UseDialog";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -104,14 +113,16 @@ export default defineComponent({
     const categories = ref([]);
     const loading = ref(true);
     const router = useRouter();
+    const table = "categoria";
 
-    const { list } = useApi();
-    const { notifyError } = useNotify();
+    const { list, remove } = useApi();
+    const { notifyError, notifySuccess } = useNotify();
+    const { dialogShow } = useDialog();
 
     const handlerListCategories = async () => {
       try {
         loading.value = true;
-        categories.value = await list("categoria");
+        categories.value = await list(table);
         loading.value = false;
       } catch (error) {
         notifyError(error);
@@ -122,8 +133,18 @@ export default defineComponent({
       router.push({ name: "form-category", params: { id: category.id } });
     };
 
-    const handlerRemove = async () => {
-      //
+    const handlerRemove = async (category) => {
+      dialogShow({
+        message: `Deseja remover a categoria ${category.name}?`,
+      }).onOk(async () => {
+        try {
+          await remove(table, category.id);
+          notifySuccess("Categoria removida com sucesso!");
+          handlerListCategories();
+        } catch (error) {
+          notifyError(error.message);
+        }
+      });
     };
 
     onMounted(() => {
