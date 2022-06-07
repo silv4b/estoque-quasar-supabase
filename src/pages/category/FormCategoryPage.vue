@@ -88,7 +88,7 @@ export default defineComponent({
           await post(table, form.value);
           notifySuccess("Categoria cadastrada!");
         }
-        router.push({ name: "category" });
+        await router.push({name: "category"});
       } catch (error) {
         notifyError(error.message);
       }

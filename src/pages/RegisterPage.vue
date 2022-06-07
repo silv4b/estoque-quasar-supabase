@@ -82,7 +82,7 @@
 
               <template v-slot:after>
                 <q-btn
-                  v-if="visibility == 'password'"
+                  v-if="visibility === 'password'"
                   round
                   dense
                   flat
@@ -136,15 +136,15 @@ export default defineComponent({
     const form = ref({
       name: "",
       email: "",
-      passor: "",
+      password: "",
     });
 
     const handlerRegister = async () => {
       try {
         await register(form.value);
-        router.replace({
+        await router.replace({
           name: "email-confirmation",
-          query: { email: form.value.email, name: form.value.name },
+          query: {email: form.value.email, name: form.value.name},
         });
         notifySuccess("Email de confirmação enviado! 😁");
       } catch (error) {
@@ -163,7 +163,7 @@ export default defineComponent({
   },
   methods: {
     changeTypeEdit() {
-      if (this.visibility == "password") {
+      if (this.visibility === "password") {
         this.visibility = "text";
       } else {
         this.visibility = "password";
@@ -171,16 +171,16 @@ export default defineComponent({
     },
     isValidEmail(val) {
       const emailPattern =
-        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+        /^(?=[a-zA-Z\d@._%+-]{6,254}$)[a-zA-Z\d._%+-]{1,64}@(?:[a-zA-Z\d-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
       return emailPattern.test(val) || "Formato de email inválido!";
     },
     isValidPassword(val) {
       const passwordPattern =
-        /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*[0-9])(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
+        /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*\d)(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
       return (passwordPattern.test(val) && val.length >= 6) || "Senha fraca!";
     },
     isNameBiggerThan50(val) {
-      return !(val.length == 50) || "Nome não pode ter mais de 50 caracteres.";
+      return !(val.length === 50) || "Nome não pode ter mais de 50 caracteres.";
     },
   },
 });

@@ -37,7 +37,7 @@
 
               <template v-slot:after>
                 <q-btn
-                  v-if="visibility == 'password'"
+                  v-if="visibility === 'password'"
                   round
                   dense
                   flat
@@ -89,7 +89,7 @@ export default defineComponent({
     const handlerPasswordReset = async () => {
       try {
         await resetPassword(token, password.value);
-        router.push({ name: "login" });
+        await router.push({name: "login"});
         notifySuccess(`Senha atualizada! 👌`);
       } catch (error) {
         notifyError(error.message);
@@ -107,7 +107,7 @@ export default defineComponent({
   },
   methods: {
     changeTypeEdit() {
-      if (this.visibility == "password") {
+      if (this.visibility === "password") {
         this.visibility = "text";
       } else {
         this.visibility = "password";
@@ -116,7 +116,7 @@ export default defineComponent({
 
     isValidPassword(val) {
       const passwordPattern =
-        /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*[0-9])(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
+        /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*\d)(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
       /**
        * ter tamanho mínimo 6 caracteres.
        * Deves ter somente letras e numero e caractere especial(!#@$%&)

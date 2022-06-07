@@ -130,7 +130,7 @@ export default defineComponent({
     };
 
     const handlerEdit = async (category) => {
-      router.push({ name: "form-category", params: { id: category.id } });
+      await router.push({name: "form-category", params: {id: category.id}});
     };
 
     const handlerRemove = async (category) => {
@@ -140,7 +140,7 @@ export default defineComponent({
         try {
           await remove(table, category.id);
           notifySuccess("Categoria removida com sucesso!");
-          handlerListCategories();
+          await handlerListCategories();
         } catch (error) {
           notifyError(error.message);
         }
