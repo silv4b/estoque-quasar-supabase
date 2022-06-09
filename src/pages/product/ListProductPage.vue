@@ -36,9 +36,16 @@
         </template>
         <template v-slot:body-cell-img_url="props">
           <q-td :props="props">
-            <q-avatar rounded>
+            <q-avatar rounded v-if="props.row.img_url">
               <img :src="props.row.img_url" />
             </q-avatar>
+            <q-avatar
+              rounded
+              v-else
+              color="grey"
+              text-color="white"
+              icon="mdi-image-off"
+            />
           </q-td>
         </template>
         <template v-slot:body-cell-actions="props">
@@ -82,7 +89,7 @@
           color="primary"
           dense
           icon="add"
-          label="Nova Categoria"
+          label="Novo Produto"
           label-position="left"
           :to="{ name: 'form-product' }"
         />

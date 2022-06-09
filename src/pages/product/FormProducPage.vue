@@ -15,25 +15,74 @@
             <q-input
               outlined
               bottom-slots
-              v-model="form.name"
+              v-model="form.nome"
               label="Categoria"
               lazy-rules
               :rules="[
                 (val) => (val && val.length > 0) || 'Nome é obrigatório!',
               ]"
-              hint="Digite o nome da nova categoria."
+              hint="Digite o nome do novo produto."
             >
-              <template v-slot:prepend>
-                <q-icon name="mdi-shape-outline" />
-              </template>
               <template v-slot:append>
                 <q-icon
                   name="close"
-                  @click="form.name = ''"
+                  @click="form.nome = ''"
                   class="cursor-pointer"
                 />
               </template>
             </q-input>
+            <q-input
+              outlined
+              bottom-slots
+              v-model="form.estoque"
+              label="Estoque"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Estoque é obrigatório!',
+              ]"
+              hint="Digite a quantidade em estoque."
+              type="number"
+            >
+              <template v-slot:append>
+                <q-icon
+                  name="close"
+                  @click="form.estoque = '0'"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-input>
+            <q-input
+              outlined
+              bottom-slots
+              v-model="form.preco"
+              label="Preço"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Preço é obrigatório!',
+              ]"
+              prefix="R$"
+              hint="Digite a quantidade em estoque."
+            >
+              <template v-slot:append>
+                <q-icon
+                  name="close"
+                  @click="form.preco = '0'"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-input>
+
+            <q-select
+              v-model="form.categoria_id"
+              :options="optionsCategory"
+              label="Categoria"
+              option-value="id"
+              option-label="name"
+              map-options
+              emit-value
+            />
+
+            <q-editor v-model="form.descricao" min-height="5rem" />
             <q-btn
               :label="isUpdate ? 'Atualizar' : 'Adicionar'"
               color="primary"
@@ -65,53 +114,65 @@ export default defineComponent({
   name: "FormProductPage",
 
   setup() {
-    const table = "categoria";
+    const table = "produto";
     const router = useRouter();
     const route = useRoute();
     const isUpdate = computed(() => route.params.id);
 
-    let category = {};
+    let optionsCategory = ref([]);
+    let product = {};
 
-    const { post, getById, update } = useApi();
+    const { post, getById, update, list } = useApi();
     const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
-      name: "",
+      nome: "",
+      descricao: "",
+      estoque: 0,
+      preco: 0,
+      categoria_id: "",
     });
 
     const handlerSubmit = async () => {
       try {
         if (isUpdate.value) {
           await update(table, form.value);
-          notifySuccess("Categoria atualizada!");
+          notifySuccess("Produto atualizado!");
         } else {
           await post(table, form.value);
-          notifySuccess("Categoria cadastrada!");
+          notifySuccess("Produto cadastrado!");
         }
-        await router.push({ name: "category" });
+        await router.push({ name: "product" });
       } catch (error) {
         notifyError(error.message);
       }
     };
 
-    const handlerGetCategory = async (id) => {
+    const handlerGetProduct = async (id) => {
       try {
-        category = await getById(table, id);
-        form.value = category;
+        product = await getById(table, id);
+        form.value = product;
       } catch (error) {
         notifyError(error.message);
       }
     };
 
     onMounted(() => {
-      if (isUpdate.value) handlerGetCategory(isUpdate.value);
+      handlerListCategories();
+      if (isUpdate.value) handlerGetProduct(isUpdate.value);
     });
+
+    const handlerListCategories = async () => {
+      optionsCategory.value = await list("categoria");
+    };
 
     return {
       handlerSubmit,
-      handlerGetCategory,
+      handlerGetProduct,
+      handlerListCategories,
       form,
       isUpdate,
+      optionsCategory,
     };
   },
 });
