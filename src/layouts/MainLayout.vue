@@ -46,17 +46,15 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-
 import EssentialLink from "components/EssentialLink.vue";
 import UseAuthUser from "../composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 import useDialog from "src/composables/UseDialog";
+//import { linklist, mdiIcon } from "./LinkList";
 
 const mdiIcon = (name) => {
   return "mdi-" + name;
 };
-
-// https://materialdesignicons.com/
 
 const linksList = [
   {
@@ -67,16 +65,16 @@ const linksList = [
   },
   {
     title: "Categorias",
-    caption: "Itens por categoria",
+    caption: "Categorias cadastradas",
     icon: mdiIcon("shape-outline"),
     routeName: "category",
   },
-  // {
-  //   title: "Adicionar Categorias",
-  //   caption: "Itens por categoria",
-  //   icon: mdiIcon("shape-plus"),
-  //   routeName: "form-category",
-  // },
+  {
+    title: "Produtos",
+    caption: "Produtos cadastrados",
+    icon: mdiIcon("basket-outline"),
+    routeName: "product",
+  },
 ];
 
 export default defineComponent({

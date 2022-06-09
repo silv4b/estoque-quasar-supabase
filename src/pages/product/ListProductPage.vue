@@ -2,9 +2,9 @@
   <q-page padding>
     <div class="row">
       <q-table
-        title="Categorias"
-        :rows="categories"
-        :columns="columns"
+        title="Produtos"
+        :rows="products"
+        :columns="columnsProduct"
         row-key="id"
         class="col-12"
         :loading="loading"
@@ -15,14 +15,14 @@
           <q-inner-loading showing color="primary" />
         </template>
         <template v-slot:top="props">
-          <div class="col-2 q-table__title">Categorias</div>
+          <div class="col-2 q-table__title">Produtos</div>
           <q-space />
           <q-btn
             flat
             round
             dense
             icon="mdi-reload"
-            @click="handlerListCategories()"
+            @click="handlerListProducts()"
             class="q-ml-md"
           />
           <q-btn
@@ -33,6 +33,13 @@
             @click="props.toggleFullscreen"
             class="q-ml-md"
           />
+        </template>
+        <template v-slot:body-cell-img_url="props">
+          <q-td :props="props">
+            <q-avatar rounded>
+              <img :src="props.row.img_url" />
+            </q-avatar>
+          </q-td>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -77,7 +84,7 @@
           icon="add"
           label="Nova Categoria"
           label-position="left"
-          :to="{ name: 'form-category' }"
+          :to="{ name: 'form-product' }"
         />
       </q-fab>
     </q-page-sticky>
@@ -85,44 +92,29 @@
 </template>
 
 <script>
-const columns = [
-  {
-    name: "name",
-    align: "left",
-    label: "Categoria",
-    field: "name",
-    sortable: true,
-  },
-  {
-    name: "actions",
-    align: "right",
-    label: "",
-    field: "actions",
-  },
-];
-
 import { defineComponent, ref, onMounted } from "vue";
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
 import useDialog from "src/composables/UseDialog";
 import { useRouter } from "vue-router";
+import { columnsProduct } from "./TableProduct";
 
 export default defineComponent({
-  name: "CategoryListPage",
+  name: "ProductListPage",
   setup() {
-    const categories = ref([]);
+    const products = ref([]);
     const loading = ref(true);
     const router = useRouter();
-    const table = "categoria";
+    const table = "produto";
 
     const { list, remove } = useApi();
     const { notifyError, notifySuccess } = useNotify();
     const { dialogShow } = useDialog();
 
-    const handlerListCategories = async () => {
+    const handlerListProducts = async () => {
       try {
         loading.value = true;
-        categories.value = await list(table);
+        products.value = await list(table);
         loading.value = false;
       } catch (error) {
         notifyError(error);
@@ -130,17 +122,17 @@ export default defineComponent({
     };
 
     const handlerEdit = async (category) => {
-      await router.push({name: "form-category", params: {id: category.id}});
+      await router.push({ name: "form-product", params: { id: category.id } });
     };
 
     const handlerRemove = async (category) => {
       dialogShow({
-        message: `Deseja remover a categoria ${category.name}?`,
+        message: `Deseja remover o produto ${category.name}?`,
       }).onOk(async () => {
         try {
           await remove(table, category.id);
-          notifySuccess("Categoria removida com sucesso!");
-          await handlerListCategories();
+          notifySuccess("Produto removido com sucesso!");
+          await handlerListProducts();
         } catch (error) {
           notifyError(error.message);
         }
@@ -148,14 +140,14 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handlerListCategories();
+      handlerListProducts();
     });
 
     return {
-      columns,
-      categories,
+      columnsProduct,
+      products,
       loading,
-      handlerListCategories,
+      handlerListProducts,
       handlerEdit,
       handlerRemove,
     };
