@@ -10,6 +10,7 @@
         :loading="loading"
         no-data-label="Não foi encontrado nada ..."
         no-results-label="Sem resultados para este filtro."
+        :visible-columns="visibleColumns"
       >
         <template v-slot:loading>
           <q-inner-loading showing color="primary" />
@@ -17,6 +18,19 @@
         <template v-slot:top="props">
           <div class="col-2 q-table__title">Produtos</div>
           <q-space />
+          <q-select
+            v-model="visibleColumns"
+            multiple
+            borderless
+            options-dense
+            emit-value
+            map-options
+            :display-value="$q.lang.table.columns"
+            :options="columnsProduct"
+            option-value="name"
+            style="min-width: 100px"
+          />
+          <!-- options-cover -->
           <q-btn
             flat
             round
@@ -100,23 +114,27 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { columnsProduct } from "./TableProduct";
+
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
 import useDialog from "src/composables/UseDialog";
-import { useRouter } from "vue-router";
-import { columnsProduct } from "./TableProduct";
+import useDetectPlatform from "src/composables/UseDetectPlatform";
 
 export default defineComponent({
   name: "ProductListPage",
   setup() {
+    const { list, remove } = useApi();
+    const { notifyError, notifySuccess } = useNotify();
+    const { dialogShow } = useDialog();
+    const { androidPlatform } = useDetectPlatform();
+
     const products = ref([]);
     const loading = ref(true);
     const router = useRouter();
     const table = "produto";
-
-    const { list, remove } = useApi();
-    const { notifyError, notifySuccess } = useNotify();
-    const { dialogShow } = useDialog();
+    const isAndroid = androidPlatform();
 
     const handlerListProducts = async () => {
       try {
@@ -150,6 +168,19 @@ export default defineComponent({
       handlerListProducts();
     });
 
+    let visibleColumns = ref([
+      "img_url",
+      "nome",
+      "descricao",
+      "preco",
+      "estoque",
+      "actions",
+    ]);
+
+    if (isAndroid) {
+      visibleColumns = ref(["nome", "preco", "actions"]);
+    }
+
     return {
       columnsProduct,
       products,
@@ -157,6 +188,7 @@ export default defineComponent({
       handlerListProducts,
       handlerEdit,
       handlerRemove,
+      visibleColumns,
     };
   },
 });

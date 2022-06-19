@@ -16,7 +16,7 @@
               outlined
               bottom-slots
               v-model="form.nome"
-              label="Categoria"
+              label="Node do produto"
               lazy-rules
               :rules="[
                 (val) => (val && val.length > 0) || 'Nome é obrigatório!',
@@ -37,9 +37,7 @@
               v-model="form.estoque"
               label="Estoque"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Estoque é obrigatório!',
-              ]"
+              :rules="[(val) => !!val || 'Estoque é obrigatório!']"
               hint="Digite a quantidade em estoque."
               type="number"
             >
@@ -57,9 +55,7 @@
               v-model="form.preco"
               label="Preço"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Preço é obrigatório!',
-              ]"
+              :rules="[(val) => !!val || 'Preço é obrigatório!']"
               prefix="R$"
               hint="Digite a quantidade em estoque."
             >
@@ -80,6 +76,7 @@
               option-label="name"
               map-options
               emit-value
+              :rules="[(val) => !!val || 'Categoria é obrigatória!']"
             />
 
             <q-editor v-model="form.descricao" min-height="5rem" />

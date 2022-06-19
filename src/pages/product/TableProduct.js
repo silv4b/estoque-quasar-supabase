@@ -1,3 +1,5 @@
+import { formatCurrency } from "src/utils/format";
+
 const columnsProduct = [
   {
     name: "img_url",
@@ -22,8 +24,9 @@ const columnsProduct = [
   {
     name: "preco",
     align: "left",
-    label: "Valor (R$)",
+    label: "Valor",
     field: "preco",
+    format: ((val) => formatCurrency(val)),
     sortable: true,
   },
   {
