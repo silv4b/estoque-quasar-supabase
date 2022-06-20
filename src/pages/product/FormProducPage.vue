@@ -13,6 +13,13 @@
         <q-card-section>
           <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
             <q-input
+              label="Image"
+              stack-label
+              v-model="img"
+              type="file"
+              accept="image/*"
+            />
+            <q-input
               outlined
               bottom-slots
               v-model="form.nome"
@@ -119,19 +126,26 @@ export default defineComponent({
     let optionsCategory = ref([]);
     let product = {};
 
-    const { post, getById, update, list } = useApi();
+    const { post, getById, update, list, uploadImg } = useApi();
     const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
       nome: "",
       descricao: "",
-      estoque: 0,
-      preco: 0,
+      estoque: "0",
+      preco: "0.0",
       categoria_id: "",
+      img_url: "",
     });
+
+    const img = ref([]);
 
     const handlerSubmit = async () => {
       try {
+        if (img.value.length > 0) {
+          const imgUrl = await uploadImg(img.value[0], "produtos");
+          form.value.img_url = imgUrl;
+        }
         if (isUpdate.value) {
           await update(table, form.value);
           notifySuccess("Produto atualizado!");
@@ -170,6 +184,7 @@ export default defineComponent({
       form,
       isUpdate,
       optionsCategory,
+      img,
     };
   },
 });
