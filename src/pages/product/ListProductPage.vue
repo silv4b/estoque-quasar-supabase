@@ -3,20 +3,43 @@
     <div class="row">
       <q-table
         title="Produtos"
-        :rows="products"
-        :columns="columnsProduct"
         row-key="id"
         class="col-12"
-        :loading="loading"
         no-data-label="Não foi encontrado nada ..."
         no-results-label="Sem resultados para este filtro."
+        :rows="products"
+        :columns="columnsProduct"
+        :loading="loading"
         :visible-columns="visibleColumns"
+        :pagination="pagination"
+        :filter="filter"
       >
         <template v-slot:loading>
           <q-inner-loading showing color="primary" />
         </template>
         <template v-slot:top="props">
-          <div class="col-2 q-table__title">Produtos</div>
+          <q-input
+            borderless
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="Pesquisar"
+            class="all"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+              <q-icon
+                name="close"
+                @click="filter = ''"
+                class="cursor-pointer"
+              />
+            </template>
+          </q-input>
+
+          <!-- <div v-if="isAndroid == true" class="col-2 q-table__title"></div> -->
+          <div v-if="isAndroid == true" class="col-2 q-table__title">Prod.</div>
+          <div v-else class="col-2 q-table__title">Produtos</div>
+
           <q-space />
           <q-select
             v-model="visibleColumns"
@@ -135,6 +158,7 @@ export default defineComponent({
     const router = useRouter();
     const table = "produto";
     const isAndroid = androidPlatform();
+    const filter = ref("");
 
     const handlerListProducts = async () => {
       try {
@@ -164,11 +188,7 @@ export default defineComponent({
       });
     };
 
-    onMounted(() => {
-      handlerListProducts();
-    });
-
-    let visibleColumns = ref([
+    const visibleColumns = ref([
       "img_url",
       "nome",
       "descricao",
@@ -178,8 +198,20 @@ export default defineComponent({
     ]);
 
     if (isAndroid) {
-      visibleColumns = ref(["nome", "preco", "actions"]);
+      visibleColumns.value = ["nome", "preco", "actions"];
     }
+
+    console.log(isAndroid);
+
+    const pagination = ref({
+      sortBy: "nome",
+      descending: false,
+      rowsPerPage: 10,
+    });
+
+    onMounted(() => {
+      handlerListProducts();
+    });
 
     return {
       columnsProduct,
@@ -189,9 +221,16 @@ export default defineComponent({
       handlerEdit,
       handlerRemove,
       visibleColumns,
+      pagination,
+      filter,
+      isAndroid,
     };
   },
 });
 </script>
 
-<style></style>
+<style>
+.all {
+  width: 2000px;
+}
+</style>
