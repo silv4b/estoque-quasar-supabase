@@ -70,7 +70,6 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-
 import useAuthUser from "src/composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 
@@ -79,53 +78,43 @@ export default defineComponent({
   setup() {
     const { resetPassword } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
-
     const route = useRoute(); // rota atual
     const router = useRouter(); // funções de rota (push, replace, etc...)
-
     const password = ref("");
+    const visibility = ref("password");
     const token = route.query.token;
 
     const handlerPasswordReset = async () => {
       try {
         await resetPassword(token, password.value);
-        await router.push({name: "login"});
+        await router.push({ name: "login" });
         notifySuccess(`Senha atualizada! 👌`);
       } catch (error) {
         notifyError(error.message);
       }
     };
+
+    function changeTypeEdit() {
+      if (visibility.value === "password") {
+        visibility.value = "text";
+      } else {
+        visibility.value = "password";
+      }
+    }
+
+    function isValidPassword(val) {
+      const passwordPattern =
+        /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*\d)(?=.*[a-z]).{6,15}$/;
+      return (passwordPattern.test(val) && val.length >= 6) || "Senha fraca!";
+    }
+
     return {
       password,
       handlerPasswordReset,
+      changeTypeEdit,
+      isValidPassword,
+      visibility,
     };
-  },
-  data() {
-    return {
-      visibility: "password",
-    };
-  },
-  methods: {
-    changeTypeEdit() {
-      if (this.visibility === "password") {
-        this.visibility = "text";
-      } else {
-        this.visibility = "password";
-      }
-    },
-
-    isValidPassword(val) {
-      const passwordPattern =
-        /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*\d)(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
-      /**
-       * ter tamanho mínimo 6 caracteres.
-       * Deves ter somente letras e numero e caractere especial(!#@$%&)
-       * Deve ter no mínimo uma letra maiúscula e minúscula.
-       * Deve ter no mínimo um numero.
-       * Deve ter no mínimo caractere especial(!#@$%&)
-       */
-      return (passwordPattern.test(val) && val.length >= 6) || "Senha fraca!";
-    },
   },
 });
 </script>

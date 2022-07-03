@@ -45,8 +45,8 @@
               v-model="form.password"
               label="Nova senha"
               counter
-              :type="visibility"
               lazy-rules
+              :type="visibility"
               :rules="[
                 (val) => (val && val.length > 0) || 'Senha é obrigatória.',
               ]"
@@ -121,7 +121,6 @@
                 :to="{ name: 'register' }"
               ></q-btn>
               <q-btn
-                size=" rem"
                 label="Recuperar senha"
                 color="primary"
                 class="btn-fixed-width text-capitalize"
@@ -139,7 +138,6 @@
 <script>
 import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-
 import useAuthUser from "src/composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 
@@ -149,6 +147,8 @@ export default defineComponent({
     const router = useRouter();
     const { login, loginWithSocialProvider, isLoggedIn } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
+
+    let visibility = ref("password");
 
     const form = ref({
       email: "",
@@ -182,28 +182,28 @@ export default defineComponent({
       }
     };
 
-    return { form, handlerLogin, handlerSocialLogin };
-  },
-  data() {
-    return {
-      email: "",
-      password: "",
-      visibility: "password",
-    };
-  },
-  methods: {
-    changeTypeEdit() {
-      if (this.visibility === "password") {
-        this.visibility = "text";
+    function changeTypeEdit() {
+      if (visibility.value === "password") {
+        visibility.value = "text";
       } else {
-        this.visibility = "password";
+        visibility.value = "password";
       }
-    },
-    isValidEmail(val) {
+    }
+
+    function isValidEmail(val) {
       const emailPattern =
         /^(?=[a-zA-Z\d@._%+-]{6,254}$)[a-zA-Z\d._%+-]{1,64}@(?:[a-zA-Z\d-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
       return emailPattern.test(val) || "Formato de email inválido!";
-    },
+    }
+
+    return {
+      form,
+      handlerLogin,
+      handlerSocialLogin,
+      changeTypeEdit,
+      isValidEmail,
+      visibility,
+    };
   },
 });
 </script>

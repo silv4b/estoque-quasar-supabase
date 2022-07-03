@@ -44,7 +44,7 @@
             <q-btn
               label="Voltar para login"
               color="primary"
-              class="full-width"
+              class="full-width text-capitalize"
               flat
               :to="{ name: 'login' }"
             ></q-btn>
@@ -57,7 +57,6 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-
 import useAuthUser from "src/composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 

@@ -50,7 +50,6 @@ import EssentialLink from "components/EssentialLink.vue";
 import UseAuthUser from "../composables/UseAuthUser";
 import useNotify from "src/composables/UseNotify";
 import useDialog from "src/composables/UseDialog";
-//import { linklist, mdiIcon } from "./LinkList";
 
 const mdiIcon = (name) => {
   return "mdi-" + name;

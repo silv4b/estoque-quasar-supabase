@@ -108,7 +108,7 @@
             <q-btn
               label="Voltar para login"
               color="primary"
-              class="full-width"
+              class="full-width text-capitalize"
               flat
               :to="{ name: 'login' }"
             ></q-btn>
@@ -132,6 +132,7 @@ export default defineComponent({
     const router = useRouter();
     const { register } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
+    const visibility = ref("password");
 
     const form = ref({
       name: "",
@@ -144,7 +145,7 @@ export default defineComponent({
         await register(form.value);
         await router.replace({
           name: "email-confirmation",
-          query: {email: form.value.email, name: form.value.name},
+          query: { email: form.value.email, name: form.value.name },
         });
         notifySuccess("Email de confirmação enviado! 😁");
       } catch (error) {
@@ -152,36 +153,39 @@ export default defineComponent({
       }
     };
 
-    return { form, handlerRegister };
-  },
-  data() {
-    return {
-      email: "",
-      password: "",
-      visibility: "password",
-    };
-  },
-  methods: {
-    changeTypeEdit() {
-      if (this.visibility === "password") {
-        this.visibility = "text";
+    function changeTypeEdit() {
+      if (visibility.value === "password") {
+        visibility.value = "text";
       } else {
-        this.visibility = "password";
+        visibility.value = "password";
       }
-    },
-    isValidEmail(val) {
+    }
+
+    function isValidEmail(val) {
       const emailPattern =
         /^(?=[a-zA-Z\d@._%+-]{6,254}$)[a-zA-Z\d._%+-]{1,64}@(?:[a-zA-Z\d-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
       return emailPattern.test(val) || "Formato de email inválido!";
-    },
-    isValidPassword(val) {
+    }
+
+    function isValidPassword(val) {
       const passwordPattern =
         /^(?=.*[A-Z])(?=.*[!#@$%&])(?=.*\d)(?=.*[a-z]).{6,15}$/; // regex de senha segurar email
       return (passwordPattern.test(val) && val.length >= 6) || "Senha fraca!";
-    },
-    isNameBiggerThan50(val) {
+    }
+
+    function isNameBiggerThan50(val) {
       return !(val.length === 50) || "Nome não pode ter mais de 50 caracteres.";
-    },
+    }
+
+    return {
+      form,
+      handlerRegister,
+      changeTypeEdit,
+      visibility,
+      isValidEmail,
+      isValidPassword,
+      isNameBiggerThan50,
+    };
   },
 });
 </script>
