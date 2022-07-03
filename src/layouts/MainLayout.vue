@@ -99,10 +99,11 @@ export default defineComponent({
         .onOk(async () => {
           try {
             await logout();
-            notifySuccess("Bye bye! 😁");
-            router.replace({
-              name: "login",
-            });
+            await router
+              .replace({
+                name: "login",
+              })
+              .then(notifySuccess("Bye bye! 😁"));
           } catch (error) {
             notifyError(error.message);
           }

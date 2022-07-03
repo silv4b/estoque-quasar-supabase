@@ -14,6 +14,7 @@ export default defineComponent({
 .q-card {
   margin: 0.8rem !important;
   min-width: 420px;
+  max-width: 500px;
 }
 
 @media (max-width: 600px) {

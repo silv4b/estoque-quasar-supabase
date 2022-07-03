@@ -9,7 +9,7 @@
         <q-card-section>
           <p class="col-12 text-h6 text-left">Login</p>
         </q-card-section>
-        <q-separator inset />
+        <q-separator />
         <q-card-section>
           <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
             <q-input
@@ -90,20 +90,45 @@
               class="full-width"
               type="submit"
             ></q-btn>
-            <q-btn
-              label="Registrar"
-              color="primary"
-              class="full-width"
-              flat
-              :to="{ name: 'register' }"
-            ></q-btn>
-            <q-btn
-              label="Esqueci minha senha!"
-              color="primary"
-              class="full-width"
-              flat
-              :to="{ name: 'forgot-password' }"
-            ></q-btn>
+
+            <div class="text-grey-8 text-subtitle2 text-center">OU</div>
+
+            <div class="social-login">
+              <q-btn
+                flat
+                label="Google"
+                color="red-5"
+                icon="mdi-google"
+                class="btn-fixed-width"
+                @click="handlerSocialLogin('google')"
+              ></q-btn>
+              <q-btn
+                flat
+                label="Github"
+                color="grey-9"
+                icon="mdi-github"
+                class="btn-fixed-width"
+                @click="handlerSocialLogin('github')"
+              ></q-btn>
+            </div>
+            <q-separator />
+            <div class="more-options">
+              <q-btn
+                label="Registrar"
+                color="primary"
+                class="btn-fixed-width text-capitalize"
+                flat
+                :to="{ name: 'register' }"
+              ></q-btn>
+              <q-btn
+                size=" rem"
+                label="Recuperar senha"
+                color="primary"
+                class="btn-fixed-width text-capitalize"
+                flat
+                :to="{ name: 'forgot-password' }"
+              ></q-btn>
+            </div>
           </div>
         </q-card-section>
       </q-card>
@@ -122,7 +147,7 @@ export default defineComponent({
   name: "LoginPage",
   setup() {
     const router = useRouter();
-    const { login, isLoggedIn } = useAuthUser();
+    const { login, loginWithSocialProvider, isLoggedIn } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
@@ -139,14 +164,25 @@ export default defineComponent({
     const handlerLogin = async () => {
       try {
         await login(form.value);
-        await router.replace({name: "me"});
-        notifySuccess("Bem vindo! 😁");
+        await router
+          .replace({ name: "me" })
+          .then(notifySuccess("Bem vindo! 😁"));
       } catch (error) {
         notifyError(error.message);
       }
     };
 
-    return { form, handlerLogin };
+    const handlerSocialLogin = async (provider) => {
+      try {
+        await loginWithSocialProvider(provider);
+        await router.push({ name: "me" });
+        notifySuccess(`Bem vindo com o ${provider}! 😁`);
+      } catch (error) {
+        notifyError(error.message);
+      }
+    };
+
+    return { form, handlerLogin, handlerSocialLogin };
   },
   data() {
     return {
@@ -172,4 +208,20 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.social-login {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.more-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.btn-fixed-width {
+  width: calc(100% / 2.06);
+}
+</style>
