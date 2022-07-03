@@ -36,13 +36,12 @@
             </template>
           </q-input>
 
-          <!-- <div v-if="isAndroid == true" class="col-2 q-table__title"></div> -->
-          <div v-if="isAndroid == true" class="col-2 q-table__title">Prod.</div>
-          <div v-else class="col-2 q-table__title">Produtos</div>
+          <div class="col-2 q-table__title">Produtos</div>
 
           <q-space />
           <q-select
             v-model="visibleColumns"
+            dense
             multiple
             borderless
             options-dense
@@ -201,8 +200,6 @@ export default defineComponent({
       visibleColumns.value = ["nome", "preco", "actions"];
     }
 
-    console.log(isAndroid);
-
     const pagination = ref({
       sortBy: "nome",
       descending: false,
@@ -231,6 +228,6 @@ export default defineComponent({
 
 <style>
 .all {
-  width: 2000px;
+  width: 100%;
 }
 </style>

@@ -44,3 +44,4 @@ yarn-error.log*
 
 # Vs Code Folder
 .vscode
+.supabase-files

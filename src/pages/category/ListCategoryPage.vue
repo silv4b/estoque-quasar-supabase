@@ -3,18 +3,36 @@
     <div class="row">
       <q-table
         title="Categorias"
-        :rows="categories"
-        :columns="columnsCategory"
         row-key="id"
         class="col-12"
-        :loading="loading"
         no-data-label="Não foi encontrado nada ..."
         no-results-label="Sem resultados para este filtro."
+        :filter="filter"
+        :loading="loading"
+        :rows="categories"
+        :columns="columnsCategory"
       >
         <template v-slot:loading>
           <q-inner-loading showing color="primary" />
         </template>
         <template v-slot:top="props">
+          <q-input
+            borderless
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="Pesquisar"
+            class="all"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+              <q-icon
+                name="close"
+                @click="filter = ''"
+                class="cursor-pointer"
+              />
+            </template>
+          </q-input>
           <div class="col-2 q-table__title">Categorias</div>
           <q-space />
           <q-btn
@@ -99,6 +117,7 @@ export default defineComponent({
     const loading = ref(true);
     const router = useRouter();
     const table = "categoria";
+    const filter = ref("");
 
     const { list, remove } = useApi();
     const { notifyError, notifySuccess } = useNotify();
@@ -143,9 +162,14 @@ export default defineComponent({
       handlerListCategories,
       handlerEdit,
       handlerRemove,
+      filter,
     };
   },
 });
 </script>
 
-<style></style>
+<style>
+.all {
+  width: 100%;
+}
+</style>
